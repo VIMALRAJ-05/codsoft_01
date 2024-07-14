@@ -1,0 +1,113 @@
+class Contact:
+    def __init__(self, name, phone, email, address):
+        self.name = name
+        self.phone = phone
+        self.email = email
+        self.address = address
+
+class ContactBook:
+    def __init__(self):
+        self.contacts = []
+
+    def add_contact(self):
+        name = input("Enter name: ")
+        phone = input("Enter phone number: ")
+        email = input("Enter email: ")
+        address = input("Enter address: ")
+        new_contact = Contact(name, phone, email, address)
+        self.contacts.append(new_contact)
+        print("Contact added successfully.")
+
+    def view_contacts(self):
+        if not self.contacts:
+            print("No contacts found.")
+        else:
+            print("Contact List:")
+            for i, contact in enumerate(self.contacts):
+                print(f"{i + 1}. {contact.name} - {contact.phone}")
+
+    def search_contact(self):
+        query = input("Enter name or phone number to search: ")
+        found_contacts = [contact for contact in self.contacts if query in contact.name or query in contact.phone]
+        
+        if found_contacts:
+            for contact in found_contacts:
+                self.display_contact(contact)
+        else:
+            print("No contact found.")
+
+    def update_contact(self):
+        self.view_contacts()
+        try:
+            index = int(input("Enter the contact number to update: ")) - 1
+            if 0 <= index < len(self.contacts):
+                contact = self.contacts[index]
+                print("Enter new details (leave blank to keep current value):")
+                name = input(f"Name ({contact.name}): ") or contact.name
+                phone = input(f"Phone ({contact.phone}): ") or contact.phone
+                email = input(f"Email ({contact.email}): ") or contact.email
+                address = input(f"Address ({contact.address}): ") or contact.address
+
+                contact.name = name
+                contact.phone = phone
+                contact.email = email
+                contact.address = address
+
+                print("Contact updated successfully.")
+            else:
+                print("Invalid contact number.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+    def delete_contact(self):
+        self.view_contacts()
+        try:
+            index = int(input("Enter the contact number to delete: ")) - 1
+            if 0 <= index < len(self.contacts):
+                self.contacts.pop(index)
+                print("Contact deleted successfully.")
+            else:
+                print("Invalid contact number.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+    def display_contact(self, contact):
+        print(f"Name: {contact.name}")
+        print(f"Phone: {contact.phone}")
+        print(f"Email: {contact.email}")
+        print(f"Address: {contact.address}")
+        print("-" * 20)
+
+    def display_menu(self):
+        print("\nContact Book Application")
+        print("1. View Contact List")
+        print("2. Add Contact")
+        print("3. Search Contact")
+        print("4. Update Contact")
+        print("5. Delete Contact")
+        print("6. Exit")
+
+    def run(self):
+        while True:
+            self.display_menu()
+            choice = input("Enter your choice (1-6): ")
+
+            if choice == '1':
+                self.view_contacts()
+            elif choice == '2':
+                self.add_contact()
+            elif choice == '3':
+                self.search_contact()
+            elif choice == '4':
+                self.update_contact()
+            elif choice == '5':
+                self.delete_contact()
+            elif choice == '6':
+                print("Exiting the application.")
+                break
+            else:
+                print("Invalid choice. Please select a valid option.")
+
+if __name__ == "__main__":
+    contact_book = ContactBook()
+    contact_book.run()
